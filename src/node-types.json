@@ -1,0 +1,536 @@
+[
+  {
+    "type": "Block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Body",
+          "named": true
+        },
+        {
+          "type": "Decorator",
+          "named": true
+        },
+        {
+          "type": "ExtendsArgs",
+          "named": true
+        },
+        {
+          "type": "GenericArgs",
+          "named": true
+        },
+        {
+          "type": "camelIdentifier",
+          "named": true
+        },
+        {
+          "type": "pascalIdentifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Body",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "BodyElement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "BodyElement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "Block",
+          "named": true
+        },
+        {
+          "type": "Property",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Decorator",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "DecoratorArgs",
+          "named": true
+        },
+        {
+          "type": "decoratorIdentifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "DecoratorArgs",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "bexp",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ExtendsArgs",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "bexp",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "GenericArgs",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "bexp",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Property",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "Body",
+          "named": true
+        },
+        {
+          "type": "Decorator",
+          "named": true
+        },
+        {
+          "type": "GenericArgs",
+          "named": true
+        },
+        {
+          "type": "PropertyType",
+          "named": true
+        },
+        {
+          "type": "camelIdentifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "PropertyType",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "camelIdentifier",
+          "named": true
+        },
+        {
+          "type": "pascalIdentifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "addsub",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "addsub",
+          "named": true
+        },
+        {
+          "type": "muldiv",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "aexp",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "addsub",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "atom",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "camelIdentifier",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "pascalIdentifier",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "avalue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "aexp",
+          "named": true
+        },
+        {
+          "type": "atom",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "bexp",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "disj",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "bvalue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "aexp",
+          "named": true
+        },
+        {
+          "type": "bexp",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "comp",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "aexp",
+          "named": true
+        },
+        {
+          "type": "neg",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "conj",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "comp",
+          "named": true
+        },
+        {
+          "type": "conj",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "disj",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "comp",
+          "named": true
+        },
+        {
+          "type": "conj",
+          "named": true
+        },
+        {
+          "type": "disj",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "muldiv",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "aexp",
+          "named": true
+        },
+        {
+          "type": "avalue",
+          "named": true
+        },
+        {
+          "type": "muldiv",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "neg",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "bvalue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "program",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "Block",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "string",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "escape_sequence",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "!",
+    "named": false
+  },
+  {
+    "type": "\"",
+    "named": false
+  },
+  {
+    "type": "&&",
+    "named": false
+  },
+  {
+    "type": "'",
+    "named": false
+  },
+  {
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": ")",
+    "named": false
+  },
+  {
+    "type": "*",
+    "named": false
+  },
+  {
+    "type": "+",
+    "named": false
+  },
+  {
+    "type": ",",
+    "named": false
+  },
+  {
+    "type": "-",
+    "named": false
+  },
+  {
+    "type": "/",
+    "named": false
+  },
+  {
+    "type": ":",
+    "named": false
+  },
+  {
+    "type": "<",
+    "named": false
+  },
+  {
+    "type": "<=",
+    "named": false
+  },
+  {
+    "type": "==",
+    "named": false
+  },
+  {
+    "type": ">",
+    "named": false
+  },
+  {
+    "type": ">=",
+    "named": false
+  },
+  {
+    "type": "camelIdentifier",
+    "named": true
+  },
+  {
+    "type": "decoratorIdentifier",
+    "named": true
+  },
+  {
+    "type": "escape_sequence",
+    "named": true
+  },
+  {
+    "type": "false",
+    "named": false
+  },
+  {
+    "type": "number",
+    "named": true
+  },
+  {
+    "type": "pascalIdentifier",
+    "named": true
+  },
+  {
+    "type": "true",
+    "named": false
+  },
+  {
+    "type": "{",
+    "named": false
+  },
+  {
+    "type": "||",
+    "named": false
+  },
+  {
+    "type": "}",
+    "named": false
+  }
+]
