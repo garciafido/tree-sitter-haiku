@@ -2,10 +2,10 @@ const PREC = {
   COMMENT: 1, // Prefer comments over regexes
   STRING: 2,  // In a string, prefer string characters over comments
 
-  disjuction: 8,
-  CONJ: 9,
-  term: 10,
-  factor: 11,
+  DISJUNCTION: 8,
+  CONJUNTION: 9,
+  TERM: 10,
+  FACTOR: 11,
   PAREN: 12,
   boolean_value: 13,
 };
@@ -26,6 +26,10 @@ module.exports = grammar({
         $.body,
       ),
 
+      body: $ => seq('{', repeat($.body_element), '}'),
+
+      body_element: $ => choice($.block, $.property),
+
       property: $ => seq(
         repeat($.decorator),
         $.camel_identifier,
@@ -35,39 +39,32 @@ module.exports = grammar({
         optional($.body),
       ),
 
+      property_type: $ => choice($.camel_identifier, $.pascal_identifier),
+
       decorator: $ => seq(
         $.decorator_identifier,
         optional($.decorator_args),
       ),
 
-      generic_args: $ => seq('<', commaSep1($.boolean_expression), '>'),
+      decorator_args: $ => seq('(', $.fu_args, ')'),
 
-      extends_args: $ => seq('(', commaSep1($.boolean_expression), ')'),
+      generic_args: $ => seq('<', $.fu_args, '>'),
 
-      decorator_args: $ => seq('(', commaSep1($.boolean_expression), ')'),
+      extends_args: $ => seq('(', $.fu_args, ')'),
 
-      body: $ => seq('{', repeat($.bodyElement), '}'),
+      fu_args: $ => commaSep1($.boolean_expression),
 
-      bodyElement: $ => choice($.block, $.property),
+      function_call: $ =>
+        seq($.identifier, "(", $.fu_args, ")"),
 
-      property_type: $ => choice($.camel_identifier, $.pascal_identifier),
 
-      atom: $ => choice(
-        $.camel_identifier,
-        $.pascal_identifier,
-        $.string,
-        $.number,
-      ),
-
-      boolean_expression: $ => $.disjuction,
-  
-      disjuction: $ => choice(
-        prec.left(PREC.disjuction, seq($.disjuction, "||", $.compare)),
-        $.conj
+      boolean_expression: $ => choice(
+        prec.left(PREC.DISJUNCTION, seq($.boolean_expression, "||", $.conjunction)),
+        $.conjunction
       ),
   
-      conj: $ => choice(
-        prec.left(PREC.CONJ, seq($.conj, "&&", $.compare)),
+      conjunction: $ => choice(
+        prec.left(PREC.CONJUNTION, seq($.conjunction, "&&", $.compare)),
         $.compare
       ),
 
@@ -85,19 +82,20 @@ module.exports = grammar({
         "false",
         $.arithmetic_expression),
 
-      arithmetic_expression: $ => $.term,
+      arithmetic_expression: $ => choice(
+        prec.left(PREC.TERM, seq($.arithmetic_expression, choice("+", "-"), $.term)),
+        $.term),
 
       term: $ => choice(
-        prec.left(PREC.term, seq($.term, choice("+", "-"), $.factor)),
+        prec.left(PREC.FACTOR, seq($.term, choice("*", "/"), $.factor)),
         $.factor),
 
       factor: $ => choice(
-        prec.left(PREC.factor, seq($.factor, choice("*", "/"), $.arithmetic_expression)),
-        $.arithmetic_value),
-
-      arithmetic_value: $ => choice(
         prec.left(PREC.PAREN, seq("(", $.arithmetic_expression, ")")),
-        $.atom
+        $.number,
+        $.string,
+        $.identifier,
+        $.function_call,
       ),
 
       string: $ => choice(
@@ -168,6 +166,20 @@ module.exports = grammar({
       },
 
       // Identifiers
+
+      identifier: $ => $.dot_separated_identifier,
+
+      dot_separated_identifier: $ => choice(
+          seq($.simple_identifier, ".", $.dot_separated_identifier),
+          $.simple_identifier
+      ),
+
+      simple_identifier: $ => choice(
+        $.camel_identifier,
+        $.macro_identifier,
+        $.pascal_identifier
+      ),
+
       camel_identifier: $ => /[a-z_][a-zA-Z0-9_]*/,
       pascal_identifier: $ => /[A-Z][a-zA-Z0-9_]*/,
       decorator_identifier: $ => /[@][a-z_][a-zA-Z0-9_]*/,
