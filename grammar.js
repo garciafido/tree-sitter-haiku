@@ -2,12 +2,12 @@ const PREC = {
   COMMENT: 1, // Prefer comments over regexes
   STRING: 2,  // In a string, prefer string characters over comments
 
-  DISJ: 8,
+  disjuction: 8,
   CONJ: 9,
-  ADDSUB: 10,
-  MULDIV: 11,
+  term: 10,
+  factor: 11,
   PAREN: 12,
-  BVALUE: 13,
+  boolean_value: 13,
 };
 
 module.exports = grammar({
@@ -15,88 +15,88 @@ module.exports = grammar({
 
   rules: {
 
-      program: $ => repeat($.Block),
+      program: $ => repeat($.block),
 
-      Block: $ => seq(
-        repeat($.Decorator),
-        $.camelIdentifier,
-        $.pascalIdentifier,
-        optional($.GenericArgs),
-        optional($.ExtendsArgs),
-        $.Body,
+      block: $ => seq(
+        repeat($.decorator),
+        $.camel_identifier,
+        $.pascal_identifier,
+        optional($.generic_args),
+        optional($.extends_args),
+        $.body,
       ),
 
-      Property: $ => seq(
-        repeat($.Decorator),
-        $.camelIdentifier,
+      property: $ => seq(
+        repeat($.decorator),
+        $.camel_identifier,
         ':',
-        $.PropertyType,
-        optional($.GenericArgs),
-        optional($.Body),
+        $.property_type,
+        optional($.generic_args),
+        optional($.body),
       ),
 
-      Decorator: $ => seq(
-        $.decoratorIdentifier,
-        optional($.DecoratorArgs),
+      decorator: $ => seq(
+        $.decorator_identifier,
+        optional($.decorator_args),
       ),
 
-      GenericArgs: $ => seq('<', commaSep1($.bexp), '>'),
+      generic_args: $ => seq('<', commaSep1($.boolean_expression), '>'),
 
-      ExtendsArgs: $ => seq('(', commaSep1($.bexp), ')'),
+      extends_args: $ => seq('(', commaSep1($.boolean_expression), ')'),
 
-      DecoratorArgs: $ => seq('(', commaSep1($.bexp), ')'),
+      decorator_args: $ => seq('(', commaSep1($.boolean_expression), ')'),
 
-      Body: $ => seq('{', repeat($.BodyElement), '}'),
+      body: $ => seq('{', repeat($.bodyElement), '}'),
 
-      BodyElement: $ => choice($.Block, $.Property),
+      bodyElement: $ => choice($.block, $.property),
 
-      PropertyType: $ => choice($.camelIdentifier, $.pascalIdentifier),
+      property_type: $ => choice($.camel_identifier, $.pascal_identifier),
 
       atom: $ => choice(
-        $.camelIdentifier,
-        $.pascalIdentifier,
+        $.camel_identifier,
+        $.pascal_identifier,
         $.string,
         $.number,
       ),
 
-      bexp: $ => $.disj,
+      boolean_expression: $ => $.disjuction,
   
-      disj: $ => choice(
-        prec.left(PREC.DISJ, seq($.disj, "||", $.comp)),
+      disjuction: $ => choice(
+        prec.left(PREC.disjuction, seq($.disjuction, "||", $.compare)),
         $.conj
       ),
   
       conj: $ => choice(
-        prec.left(PREC.CONJ, seq($.conj, "&&", $.comp)),
-        $.comp
+        prec.left(PREC.CONJ, seq($.conj, "&&", $.compare)),
+        $.compare
       ),
 
-      comp: $ => choice(
-          prec.left(-1, seq($.aexp, choice("==", "<=", ">=", ">", "<"), $.aexp)),
-          $.neg),
+      compare: $ => choice(
+          prec.left(-1, seq($.arithmetic_expression, choice("==", "<=", ">=", ">", "<"), $.arithmetic_expression)),
+          $.negation),
   
-      neg: $ => choice(
-        prec.left(PREC.BVALUE, seq("!", $.bvalue)),
-      $.bvalue),
+      negation: $ => choice(
+        prec.left(PREC.boolean_value, seq("!", $.boolean_value)),
+      $.boolean_value),
   
-      bvalue: $ => choice(
-        seq("(", $.bexp, ")"),
+      boolean_value: $ => choice(
+        seq("(", $.boolean_expression, ")"),
         "true",
         "false",
-        $.aexp),
+        $.arithmetic_expression),
 
-      aexp: $ => $.addsub,
+      arithmetic_expression: $ => $.term,
 
-      addsub: $ => choice(
-        prec.left(PREC.ADDSUB, seq($.addsub, choice("+", "-"), $.muldiv)),
-        $.muldiv),
+      term: $ => choice(
+        prec.left(PREC.term, seq($.term, choice("+", "-"), $.factor)),
+        $.factor),
 
-      muldiv: $ => choice(
-        prec.left(PREC.MULDIV, seq($.muldiv, choice("*", "/"), $.aexp)),
-        $.avalue),
+      factor: $ => choice(
+        prec.left(PREC.factor, seq($.factor, choice("*", "/"), $.arithmetic_expression)),
+        $.arithmetic_value),
 
-      avalue: $ => choice(
-        prec.left(PREC.PAREN, seq("(", $.aexp, ")")),
+      arithmetic_value: $ => choice(
+        prec.left(PREC.PAREN, seq("(", $.arithmetic_expression, ")")),
         $.atom
       ),
 
@@ -168,10 +168,10 @@ module.exports = grammar({
       },
 
       // Identifiers
-      camelIdentifier: $ => /[a-z_][a-zA-Z0-9_]*/,
-      pascalIdentifier: $ => /[A-Z][a-zA-Z0-9_]*/,
-      decoratorIdentifier: $ => /[@][a-z_][a-zA-Z0-9_]*/,
-      macroIdentifier: $ => /[$][a-z_][a-zA-Z0-9_]*/,
+      camel_identifier: $ => /[a-z_][a-zA-Z0-9_]*/,
+      pascal_identifier: $ => /[A-Z][a-zA-Z0-9_]*/,
+      decorator_identifier: $ => /[@][a-z_][a-zA-Z0-9_]*/,
+      macro_identifier: $ => /[$][a-z_][a-zA-Z0-9_]*/,
     }
   }
 );
