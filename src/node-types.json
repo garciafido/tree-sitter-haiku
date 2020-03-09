@@ -1,56 +1,6 @@
 [
   {
-    "type": "Block",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "Body",
-          "named": true
-        },
-        {
-          "type": "Decorator",
-          "named": true
-        },
-        {
-          "type": "ExtendsArgs",
-          "named": true
-        },
-        {
-          "type": "GenericArgs",
-          "named": true
-        },
-        {
-          "type": "camelIdentifier",
-          "named": true
-        },
-        {
-          "type": "pascalIdentifier",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "Body",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "BodyElement",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "BodyElement",
+    "type": "arithmetic_expression",
     "named": true,
     "fields": {},
     "children": {
@@ -58,113 +8,14 @@
       "required": true,
       "types": [
         {
-          "type": "Block",
-          "named": true
-        },
-        {
-          "type": "Property",
+          "type": "term",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "Decorator",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "DecoratorArgs",
-          "named": true
-        },
-        {
-          "type": "decoratorIdentifier",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "DecoratorArgs",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "bexp",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "ExtendsArgs",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "bexp",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "GenericArgs",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "bexp",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "Property",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "Body",
-          "named": true
-        },
-        {
-          "type": "Decorator",
-          "named": true
-        },
-        {
-          "type": "GenericArgs",
-          "named": true
-        },
-        {
-          "type": "PropertyType",
-          "named": true
-        },
-        {
-          "type": "camelIdentifier",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "PropertyType",
+    "type": "arithmetic_value",
     "named": true,
     "fields": {},
     "children": {
@@ -172,45 +23,11 @@
       "required": true,
       "types": [
         {
-          "type": "camelIdentifier",
+          "type": "arithmetic_expression",
           "named": true
         },
         {
-          "type": "pascalIdentifier",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "addsub",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "addsub",
-          "named": true
-        },
-        {
-          "type": "muldiv",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "aexp",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "addsub",
+          "type": "atom",
           "named": true
         }
       ]
@@ -225,7 +42,7 @@
       "required": true,
       "types": [
         {
-          "type": "camelIdentifier",
+          "type": "camel_identifier",
           "named": true
         },
         {
@@ -233,7 +50,7 @@
           "named": true
         },
         {
-          "type": "pascalIdentifier",
+          "type": "pascal_identifier",
           "named": true
         },
         {
@@ -244,60 +61,7 @@
     }
   },
   {
-    "type": "avalue",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "aexp",
-          "named": true
-        },
-        {
-          "type": "atom",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "bexp",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "disj",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "bvalue",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "aexp",
-          "named": true
-        },
-        {
-          "type": "bexp",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "comp",
+    "type": "block",
     "named": true,
     "fields": {},
     "children": {
@@ -305,11 +69,114 @@
       "required": true,
       "types": [
         {
-          "type": "aexp",
+          "type": "body",
           "named": true
         },
         {
-          "type": "neg",
+          "type": "camel_identifier",
+          "named": true
+        },
+        {
+          "type": "decorator",
+          "named": true
+        },
+        {
+          "type": "extends_args",
+          "named": true
+        },
+        {
+          "type": "generic_args",
+          "named": true
+        },
+        {
+          "type": "pascal_identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "body",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "bodyElement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "bodyElement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "property",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "boolean_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "disjuction",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "boolean_value",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "arithmetic_expression",
+          "named": true
+        },
+        {
+          "type": "boolean_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "compare",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "arithmetic_expression",
+          "named": true
+        },
+        {
+          "type": "negation",
           "named": true
         }
       ]
@@ -324,7 +191,7 @@
       "required": true,
       "types": [
         {
-          "type": "comp",
+          "type": "compare",
           "named": true
         },
         {
@@ -335,7 +202,7 @@
     }
   },
   {
-    "type": "disj",
+    "type": "decorator",
     "named": true,
     "fields": {},
     "children": {
@@ -343,7 +210,41 @@
       "required": true,
       "types": [
         {
-          "type": "comp",
+          "type": "decorator_args",
+          "named": true
+        },
+        {
+          "type": "decorator_identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "decorator_args",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "boolean_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "disjuction",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "compare",
           "named": true
         },
         {
@@ -351,14 +252,14 @@
           "named": true
         },
         {
-          "type": "disj",
+          "type": "disjuction",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "muldiv",
+    "type": "extends_args",
     "named": true,
     "fields": {},
     "children": {
@@ -366,22 +267,52 @@
       "required": true,
       "types": [
         {
-          "type": "aexp",
-          "named": true
-        },
-        {
-          "type": "avalue",
-          "named": true
-        },
-        {
-          "type": "muldiv",
+          "type": "boolean_expression",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "neg",
+    "type": "factor",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "arithmetic_expression",
+          "named": true
+        },
+        {
+          "type": "arithmetic_value",
+          "named": true
+        },
+        {
+          "type": "factor",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "generic_args",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "boolean_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "negation",
     "named": true,
     "fields": {},
     "children": {
@@ -389,7 +320,7 @@
       "required": true,
       "types": [
         {
-          "type": "bvalue",
+          "type": "boolean_value",
           "named": true
         }
       ]
@@ -404,7 +335,57 @@
       "required": false,
       "types": [
         {
-          "type": "Block",
+          "type": "block",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "property",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "body",
+          "named": true
+        },
+        {
+          "type": "camel_identifier",
+          "named": true
+        },
+        {
+          "type": "decorator",
+          "named": true
+        },
+        {
+          "type": "generic_args",
+          "named": true
+        },
+        {
+          "type": "property_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "property_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "camel_identifier",
+          "named": true
+        },
+        {
+          "type": "pascal_identifier",
           "named": true
         }
       ]
@@ -420,6 +401,25 @@
       "types": [
         {
           "type": "escape_sequence",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "term",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "factor",
+          "named": true
+        },
+        {
+          "type": "term",
           "named": true
         }
       ]
@@ -494,11 +494,11 @@
     "named": false
   },
   {
-    "type": "camelIdentifier",
+    "type": "camel_identifier",
     "named": true
   },
   {
-    "type": "decoratorIdentifier",
+    "type": "decorator_identifier",
     "named": true
   },
   {
@@ -514,7 +514,7 @@
     "named": true
   },
   {
-    "type": "pascalIdentifier",
+    "type": "pascal_identifier",
     "named": true
   },
   {
