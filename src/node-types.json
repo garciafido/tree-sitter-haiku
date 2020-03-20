@@ -145,10 +145,6 @@
         {
           "type": "negation_expression",
           "named": true
-        },
-        {
-          "type": "relational_expression",
-          "named": true
         }
       ]
     }

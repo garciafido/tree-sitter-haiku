@@ -280,7 +280,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "relational_expression"
+              "name": "negation_expression"
             }
           ]
         },

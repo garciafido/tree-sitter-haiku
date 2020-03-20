@@ -83,7 +83,7 @@ module.exports = grammar({
           seq(
             $.conjuction_expression,
             $.conjuction_operator,
-            $.relational_expression
+            $.negation_expression
           ),
          $.negation_expression),
 
