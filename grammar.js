@@ -2,15 +2,8 @@ const PREC = {
   COMMENT: 1, // Prefer comments over regexes
   STRING: 2,  // In a string, prefer string characters over comments
 
-  // DISJUNCTION: 8,
-  // CONJUNTION: 9,
-  // CONJUNTION: 9,
-  // TERM: 10,
-  // PAREN: 12,
-  // boolean_value: 13,
-
-  RELATIONAL: 1,
-  FACTOR: 11,
+  RELATIONAL: 10,
+  FACTOR: 10,
 };
 
 module.exports = grammar({
@@ -58,15 +51,15 @@ module.exports = grammar({
       ),
 
       decorator_args: $ => seq(
-        '(', 
+        "(",
             optional($.expression_list), 
-        ')'),
+        ")"),
 
       generic_args: $ => seq(
-        '<', $.expression_list, '>'),
+        "<", $.expression_list, ">"),
 
       extends_args: $ => seq(
-        '(', $.expression_list, ')'),
+        "(", $.expression_list, ")"),
     
       //------------
       // Expressions
@@ -95,24 +88,26 @@ module.exports = grammar({
             $.conjuction_operator,
             $.relational_expression
           ),
-          prec.left(PREC.FACTOR, $.negation_expression)
+         $.negation_expression
         ),
 
-      negation_expression: $ =>
+      negation_expression: $ => prec.left(PREC.FACTOR,
         choice(
           seq("not", $.negation_expression),
           $.relational_expression
-        ),
+        )
+      ),
 
-      relational_expression: $ =>
+      relational_expression: $ => prec.left(PREC.RELATIONAL,
         choice(
-          prec.left(PREC.RELATIONAL, seq(
+          seq(
             $.relational_expression,
             $.relational_operator,
             $.arithmetic_expression
-          )),
+          ),
           $.arithmetic_expression
-        ),
+        )
+      ),
 
       arithmetic_expression: $ =>
         $.additive_expression,
@@ -314,69 +309,6 @@ module.exports = grammar({
           bigint_literal,
         ))
       },
-
-
-      // fu_args: $ => commaSep1($.boolean_expression),
-      //
-      // function_call: $ =>
-      //   seq($.identifier, "(", $.fu_args, ")"),
-      //
-      //
-      // boolean_expression: $ => choice(
-      //   prec.left(PREC.DISJUNCTION, seq($.boolean_expression, "||", $.conjunction)),
-      //   $.conjunction
-      // ),
-      //
-      // conjunction: $ => choice(
-      //   prec.left(PREC.CONJUNTION, seq($.conjunction, "&&", $.compare)),
-      //   $.compare
-      // ),
-      //
-      // compare: $ => choice(
-      //     prec.left(-1, seq($.arithmetic_expression, choice("==", "<=", ">=", ">", "<"), $.arithmetic_expression)),
-      //     $.negation),
-      //
-      // negation: $ => choice(
-      //   prec.left(PREC.boolean_value, seq("!", $.boolean_value)),
-      // $.boolean_value),
-      //
-      // boolean_value: $ => choice(
-      //   seq("(", $.boolean_expression, ")"),
-      //   "true",
-      //   "false",
-      //   $.arithmetic_expression),
-      //
-      // arithmetic_expression: $ => choice(
-      //   prec.left(PREC.TERM, seq($.arithmetic_expression, choice("+", "-"), $.term)),
-      //   $.term),
-      //
-      // term: $ => choice(
-      //   prec.left(PREC.FACTOR, seq($.term, choice("*", "/"), $.factor)),
-      //   $.factor),
-      //
-      // factor: $ => choice(
-      //   prec.left(PREC.PAREN, seq("(", $.arithmetic_expression, ")")),
-      //   $.number,
-      //   $.string,
-      //   $.identifier,
-      //   $.function_call,
-      // ),
-
-      // // Identifiers
-      //
-      // identifier: $ => $.dot_separated_identifier,
-      //
-      // dot_separated_identifier: $ => choice(
-      //     seq($.simple_identifier, ".", $.dot_separated_identifier),
-      //     $.simple_identifier
-      // ),
-      //
-      // simple_identifier: $ => choice(
-      //   $.camel_identifier,
-      //   $.macro_identifier,
-      //   $.pascal_identifier
-      // ),
-      //
     }
   }
 );

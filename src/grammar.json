@@ -285,44 +285,44 @@
           ]
         },
         {
-          "type": "PREC_LEFT",
-          "value": 11,
-          "content": {
-            "type": "SYMBOL",
-            "name": "negation_expression"
-          }
+          "type": "SYMBOL",
+          "name": "negation_expression"
         }
       ]
     },
     "negation_expression": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "not"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "negation_expression"
-            }
-          ]
-        },
-        {
-          "type": "SYMBOL",
-          "name": "relational_expression"
-        }
-      ]
+      "type": "PREC_LEFT",
+      "value": 10,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "not"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "negation_expression"
+              }
+            ]
+          },
+          {
+            "type": "SYMBOL",
+            "name": "relational_expression"
+          }
+        ]
+      }
     },
     "relational_expression": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "PREC_LEFT",
-          "value": 1,
-          "content": {
+      "type": "PREC_LEFT",
+      "value": 10,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
             "type": "SEQ",
             "members": [
               {
@@ -338,13 +338,13 @@
                 "name": "arithmetic_expression"
               }
             ]
+          },
+          {
+            "type": "SYMBOL",
+            "name": "arithmetic_expression"
           }
-        },
-        {
-          "type": "SYMBOL",
-          "name": "arithmetic_expression"
-        }
-      ]
+        ]
+      }
     },
     "arithmetic_expression": {
       "type": "SYMBOL",
