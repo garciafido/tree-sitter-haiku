@@ -2,18 +2,25 @@ const PREC = {
   COMMENT: 1, // Prefer comments over regexes
   STRING: 2,  // In a string, prefer string characters over comments
 
-  DISJUNCTION: 8,
-  CONJUNTION: 9,
-  TERM: 10,
+  // DISJUNCTION: 8,
+  // CONJUNTION: 9,
+  // CONJUNTION: 9,
+  // TERM: 10,
+  // PAREN: 12,
+  // boolean_value: 13,
+
+  RELATIONAL: 1,
   FACTOR: 11,
-  PAREN: 12,
-  boolean_value: 13,
 };
 
 module.exports = grammar({
   name: 'Haiku',
 
   rules: {
+
+      //--------------
+      // Haiku grammar
+      //--------------
 
       program: $ => repeat($.block),
 
@@ -26,80 +33,211 @@ module.exports = grammar({
         $.body,
       ),
 
-      body: $ => seq('{', repeat($.body_element), '}'),
+      body: $ => seq(
+        '{', repeat($.body_element), '}'),
 
-      body_element: $ => choice($.block, $.property),
+      body_element: $ => choice(
+        $.block, 
+        $.property),
 
       property: $ => seq(
         repeat($.decorator),
-        $.camel_identifier,
-        ':',
+        $.camel_identifier, ':',
         $.property_type,
         optional($.generic_args),
         optional($.body),
       ),
 
-      property_type: $ => choice($.camel_identifier, $.pascal_identifier),
+      property_type: $ => choice(
+        $.camel_identifier, 
+        $.pascal_identifier),
 
       decorator: $ => seq(
         $.decorator_identifier,
         optional($.decorator_args),
       ),
 
-      decorator_args: $ => seq('(', $.fu_args, ')'),
+      decorator_args: $ => seq(
+        '(', 
+            optional($.expression_list), 
+        ')'),
 
-      generic_args: $ => seq('<', $.fu_args, '>'),
+      generic_args: $ => seq(
+        '<', $.expression_list, '>'),
 
-      extends_args: $ => seq('(', $.fu_args, ')'),
+      extends_args: $ => seq(
+        '(', $.expression_list, ')'),
+    
+      //------------
+      // Expressions
+      //------------
+    
+      expression: $ =>
+        $.boolean_expression,
 
-      fu_args: $ => commaSep1($.boolean_expression),
+      boolean_expression: $ =>
+        $.disjunction_expression,
 
-      function_call: $ =>
-        seq($.identifier, "(", $.fu_args, ")"),
+      disjunction_expression: $ =>
+        choice(
+          seq(
+            $.disjunction_expression,
+            $.disjunction_operator,
+            $.conjuction_expression
+          ),
+          $.conjuction_expression
+        ),
 
+      conjuction_expression: $ =>
+        choice(
+          seq(
+            $.conjuction_expression,
+            $.conjuction_operator,
+            $.relational_expression
+          ),
+          prec.left(PREC.FACTOR, $.negation_expression)
+        ),
 
-      boolean_expression: $ => choice(
-        prec.left(PREC.DISJUNCTION, seq($.boolean_expression, "||", $.conjunction)),
-        $.conjunction
-      ),
-  
-      conjunction: $ => choice(
-        prec.left(PREC.CONJUNTION, seq($.conjunction, "&&", $.compare)),
-        $.compare
-      ),
+      negation_expression: $ =>
+        choice(
+          seq("not", $.negation_expression),
+          $.relational_expression
+        ),
 
-      compare: $ => choice(
-          prec.left(-1, seq($.arithmetic_expression, choice("==", "<=", ">=", ">", "<"), $.arithmetic_expression)),
-          $.negation),
-  
-      negation: $ => choice(
-        prec.left(PREC.boolean_value, seq("!", $.boolean_value)),
-      $.boolean_value),
-  
-      boolean_value: $ => choice(
-        seq("(", $.boolean_expression, ")"),
-        "true",
-        "false",
-        $.arithmetic_expression),
+      relational_expression: $ =>
+        choice(
+          prec.left(PREC.RELATIONAL, seq(
+            $.relational_expression,
+            $.relational_operator,
+            $.arithmetic_expression
+          )),
+          $.arithmetic_expression
+        ),
 
-      arithmetic_expression: $ => choice(
-        prec.left(PREC.TERM, seq($.arithmetic_expression, choice("+", "-"), $.term)),
-        $.term),
+      arithmetic_expression: $ =>
+        $.additive_expression,
 
-      term: $ => choice(
-        prec.left(PREC.FACTOR, seq($.term, choice("*", "/"), $.factor)),
+      additive_expression: $ =>
+        choice(
+          seq(
+            $.additive_expression,
+            $.additive_operator,
+            $.multiplicative_expression
+          ),
+          $.multiplicative_expression
+        ),
+
+      multiplicative_expression: $ =>
+        choice(
+          seq(
+            $.multiplicative_expression,
+            $.multiplicative_operator,
+            $.factor
+          ),
+          $.factor
+        ),
+
+      factor: $ =>
+        choice(
+          $.identifier,
+          seq("(", $.expression, ")"),
+          $.function_call,
+          $.list,
+          $.unsigned_constant,
+          $.unary_expression,
+        ),
+
+      function_call: $ => seq(
+        $.identifier,
+        "(",
+            optional($.expression_list),
+        ")"),
+
+      unary_expression: $ => seq(
+        $.unary_operator,
         $.factor),
 
-      factor: $ => choice(
-        prec.left(PREC.PAREN, seq("(", $.arithmetic_expression, ")")),
-        $.number,
-        $.string,
-        $.identifier,
-        $.function_call,
-      ),
+      unsigned_constant: $ =>
+        $.literal,
+
+      list: $ => seq(
+        "[", $.expression_list, "]"),
+
+      expression_list: $ => seq(
+        $.expression,
+        repeat(
+          seq(",", $.expression),
+        )),
+
+      identifier: $ => seq(
+        $.identifier_name,
+        repeat(
+          seq(".", $.identifier_name),
+        )),
+
+      identifier_name: $ => choice(
+        $.camel_identifier,
+        $.pascal_identifier),
+
+      additive_operator: $ => choice(
+        "+",
+        "-",
+        "|"),
+
+      disjunction_operator: $ =>
+        "||",
+
+      conjuction_operator: $ =>
+        "&&",
+
+      unary_operator: $ => choice(
+        "+",
+        "-"),
+
+      multiplicative_operator: $ => choice(
+        "*",
+        "/",
+        "%",
+        "&"),
+
+      relational_operator: $ => choice(
+        "==",
+        "!=",
+        "<",
+        ">",
+        ">=",
+        "<=",
+        "in",
+        seq("not", "in"),
+        "is",
+        seq("is", "not")),
+
+      //---------
+      // Literals
+      //---------
+
+      literal: $ => choice(
+          $.number,
+          $.string),
+
+      number: $ =>
+        $.integer,
 
       string: $ => choice(
-        seq(
+        $.double_quote_string,
+        $.single_quote_string,
+        $.template_string),
+
+      //-------
+      // Tokens
+      //-------
+
+      camel_identifier: $ => /[a-z_][a-zA-Z0-9_]*/,
+      pascal_identifier: $ => /[A-Z][a-zA-Z0-9_]*/,
+      decorator_identifier: $ => /[@][a-z_][a-zA-Z0-9_]*/,
+      macro_identifier: $ => /[$][a-z_][a-zA-Z0-9_]*/,
+
+      double_quote_string: $ => seq(
           '"',
           repeat(choice(
             token.immediate(prec(PREC.STRING, /[^"\\\n]+|\\\r?\n/)),
@@ -107,15 +245,27 @@ module.exports = grammar({
           )),
           '"'
         ),
-        seq(
+
+      single_quote_string: $ => seq(
           "'",
           repeat(choice(
             token.immediate(prec(PREC.STRING, /[^'\\\n]+|\\\r?\n/)),
             $.escape_sequence
           )),
           "'"
-        )
-      ),
+        ),
+
+      template_string: $ => seq(
+          "`",
+          repeat(choice(
+            token.immediate(prec(PREC.STRING, /[^'\\\n]+|\\\r?\n/)),
+            $.escape_sequence
+          )),
+          "`"
+        ),
+
+      integer: $ =>
+        /[0-9]+/,
 
       escape_sequence: $ => token.immediate(seq(
         '\\',
@@ -128,7 +278,7 @@ module.exports = grammar({
         )
       )),
 
-      number: $ => {
+      any_number: $ => {
         const hex_literal = seq(
           choice('0x', '0X'),
           /[\da-fA-F](_?[\da-fA-F])*/
@@ -165,25 +315,68 @@ module.exports = grammar({
         ))
       },
 
-      // Identifiers
 
-      identifier: $ => $.dot_separated_identifier,
+      // fu_args: $ => commaSep1($.boolean_expression),
+      //
+      // function_call: $ =>
+      //   seq($.identifier, "(", $.fu_args, ")"),
+      //
+      //
+      // boolean_expression: $ => choice(
+      //   prec.left(PREC.DISJUNCTION, seq($.boolean_expression, "||", $.conjunction)),
+      //   $.conjunction
+      // ),
+      //
+      // conjunction: $ => choice(
+      //   prec.left(PREC.CONJUNTION, seq($.conjunction, "&&", $.compare)),
+      //   $.compare
+      // ),
+      //
+      // compare: $ => choice(
+      //     prec.left(-1, seq($.arithmetic_expression, choice("==", "<=", ">=", ">", "<"), $.arithmetic_expression)),
+      //     $.negation),
+      //
+      // negation: $ => choice(
+      //   prec.left(PREC.boolean_value, seq("!", $.boolean_value)),
+      // $.boolean_value),
+      //
+      // boolean_value: $ => choice(
+      //   seq("(", $.boolean_expression, ")"),
+      //   "true",
+      //   "false",
+      //   $.arithmetic_expression),
+      //
+      // arithmetic_expression: $ => choice(
+      //   prec.left(PREC.TERM, seq($.arithmetic_expression, choice("+", "-"), $.term)),
+      //   $.term),
+      //
+      // term: $ => choice(
+      //   prec.left(PREC.FACTOR, seq($.term, choice("*", "/"), $.factor)),
+      //   $.factor),
+      //
+      // factor: $ => choice(
+      //   prec.left(PREC.PAREN, seq("(", $.arithmetic_expression, ")")),
+      //   $.number,
+      //   $.string,
+      //   $.identifier,
+      //   $.function_call,
+      // ),
 
-      dot_separated_identifier: $ => choice(
-          seq($.simple_identifier, ".", $.dot_separated_identifier),
-          $.simple_identifier
-      ),
-
-      simple_identifier: $ => choice(
-        $.camel_identifier,
-        $.macro_identifier,
-        $.pascal_identifier
-      ),
-
-      camel_identifier: $ => /[a-z_][a-zA-Z0-9_]*/,
-      pascal_identifier: $ => /[A-Z][a-zA-Z0-9_]*/,
-      decorator_identifier: $ => /[@][a-z_][a-zA-Z0-9_]*/,
-      macro_identifier: $ => /[$][a-z_][a-zA-Z0-9_]*/,
+      // // Identifiers
+      //
+      // identifier: $ => $.dot_separated_identifier,
+      //
+      // dot_separated_identifier: $ => choice(
+      //     seq($.simple_identifier, ".", $.dot_separated_identifier),
+      //     $.simple_identifier
+      // ),
+      //
+      // simple_identifier: $ => choice(
+      //   $.camel_identifier,
+      //   $.macro_identifier,
+      //   $.pascal_identifier
+      // ),
+      //
     }
   }
 );
