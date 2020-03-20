@@ -2,7 +2,7 @@ const PREC = {
   COMMENT: 1, // Prefer comments over regexes
   STRING: 2,  // In a string, prefer string characters over comments
 
-  RELATIONAL: 10,
+  RELATIONAL: 1,
   FACTOR: 10,
 };
 
@@ -71,76 +71,60 @@ module.exports = grammar({
       boolean_expression: $ =>
         $.disjunction_expression,
 
-      disjunction_expression: $ =>
-        choice(
+      disjunction_expression: $ => choice(
           seq(
             $.disjunction_expression,
             $.disjunction_operator,
             $.conjuction_expression
           ),
-          $.conjuction_expression
-        ),
+          $.conjuction_expression),
 
-      conjuction_expression: $ =>
-        choice(
+      conjuction_expression: $ => choice(
           seq(
             $.conjuction_expression,
             $.conjuction_operator,
             $.relational_expression
           ),
-         $.negation_expression
-        ),
+         $.negation_expression),
 
-      negation_expression: $ => prec.left(PREC.FACTOR,
-        choice(
+      negation_expression: $ => prec.left(PREC.FACTOR, choice(
           seq("not", $.negation_expression),
-          $.relational_expression
-        )
-      ),
+          $.relational_expression)),
 
-      relational_expression: $ => prec.left(PREC.RELATIONAL,
-        choice(
+      relational_expression: $ => prec.left(PREC.RELATIONAL, choice(
           seq(
             $.relational_expression,
             $.relational_operator,
             $.arithmetic_expression
           ),
-          $.arithmetic_expression
-        )
-      ),
+          $.arithmetic_expression)),
 
       arithmetic_expression: $ =>
         $.additive_expression,
 
-      additive_expression: $ =>
-        choice(
+      additive_expression: $ => choice(
           seq(
             $.additive_expression,
             $.additive_operator,
             $.multiplicative_expression
           ),
-          $.multiplicative_expression
-        ),
+          $.multiplicative_expression),
 
-      multiplicative_expression: $ =>
-        choice(
+      multiplicative_expression: $ => choice(
           seq(
             $.multiplicative_expression,
             $.multiplicative_operator,
             $.factor
           ),
-          $.factor
-        ),
+          $.factor),
 
-      factor: $ =>
-        choice(
+      factor: $ => choice(
           $.identifier,
           seq("(", $.expression, ")"),
           $.function_call,
           $.list,
           $.unsigned_constant,
-          $.unary_expression,
-        ),
+          $.unary_expression),
 
       function_call: $ => seq(
         $.identifier,

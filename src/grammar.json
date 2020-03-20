@@ -318,7 +318,7 @@
     },
     "relational_expression": {
       "type": "PREC_LEFT",
-      "value": 10,
+      "value": 1,
       "content": {
         "type": "CHOICE",
         "members": [
