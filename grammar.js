@@ -10,7 +10,12 @@ const PREC = {
 };
 
 module.exports = grammar({
-  name: 'Haiku',
+  name: 'haiku',
+
+
+  externals: $ => [
+    $._template_chars
+  ],
 
   extras: $ => [
     $.comment,
@@ -27,6 +32,15 @@ module.exports = grammar({
     $._literal,
     $._number,
     $._string,
+  ],
+
+  inline: $ => [
+    $.generic_arg,
+    $.factor,
+    $.identifier_name,
+    $.generic_args,
+    $.decorator_args,
+    $.expression_list,
   ],
 
   rules: {
@@ -199,44 +213,62 @@ module.exports = grammar({
           $.float),
 
       _string: $ => choice(
-        $.double_quote_string,
-        $.single_quote_string,
-        $.template_string),
+        $.simple_string,
+        $.template_string,
+      ),
 
-      double_quote_string: $ => seq(
+      simple_string: $ => choice(
+        seq(
           '"',
-          repeat(choice($.interpolation, $.escape_sequence, $._not_escape_sequence, token.immediate(prec(PREC.STRING, /[^"\\\n]+|\\\r?\n/)))),
-          '"'),
-
-      single_quote_string: $ => seq(
+          repeat(choice(
+            token.immediate(prec(PREC.STRING, /[^"\\\n]+|\\\r?\n/)),
+            $.escape_sequence
+          )),
+          '"'
+        ),
+        seq(
           "'",
-          repeat(choice($.interpolation, $.escape_sequence, $._not_escape_sequence, token.immediate(prec(PREC.STRING, /[^'\\\n]+|\\\r?\n/)))),
-          "'"),
+          repeat(choice(
+            token.immediate(prec(PREC.STRING, /[^'\\\n]+|\\\r?\n/)),
+            $.escape_sequence
+          )),
+          "'"
+        )),
 
-      template_string: $ => seq(
-          "`",
-          repeat(choice($.interpolation, $.escape_sequence, $._not_escape_sequence, token.immediate(prec(PREC.STRING, /[^`\\\n]+|\\\r?\n/)))),
-          "`"),
-
-      interpolation: $ => seq(
-          '{',
-          $._expression,
-          optional($.type_conversion),
-          optional($.format_specifier),
-          '}'),
-
-      _not_escape_sequence: $ => '\\',
-
-      format_specifier: $ => seq(
-        ':',
-        repeat(choice(
-          /[^{}\n]+/,
-          $.format_expression
+      escape_sequence: $ => token.immediate(seq(
+        '\\',
+        choice(
+          /[^xu0-7]/,
+          /[0-7]{1,3}/,
+          /x[0-9a-fA-F]{2}/,
+          /u[0-9a-fA-F]{4}/,
+          /u{[0-9a-fA-F]+}/
         ))),
 
-      format_expression: $ => seq('{', $._expression, '}'),
+      // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
+      comment: $ => token(prec(PREC.COMMENT, choice(
+        seq('//', /.*/),
+        seq(
+          '/*',
+          /[^*]*\*+([^/*][^*]*\*+)*/,
+          '/'
+        )))),
 
-      type_conversion: $ => /![a-z]/,
+    template_string: $ => seq(
+      '`',
+      repeat(choice(
+        $._template_chars,
+        $.escape_sequence,
+        $.template_substitution
+      )),
+      '`'
+    ),
+
+    template_substitution: $ => seq(
+      '${',
+      $._expression,
+      '}'
+    ),
 
       //-------
       // Tokens
@@ -249,15 +281,6 @@ module.exports = grammar({
       decorator_identifier: $ => token(/[@][a-z_][a-zA-Z0-9_]*/),
 
       macro_identifier: $ => token(/[$][a-z_][a-zA-Z0-9_]*/),
-
-      // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
-      comment: $ => token(prec(PREC.COMMENT, choice(
-          seq('//', /.*/),
-          seq(
-            '/*',
-            /[^*]*\*+([^/*][^*]*\*+)*/,
-            '/'
-          )))),
 
       integer: $ => token(choice(
           seq(
@@ -296,18 +319,6 @@ module.exports = grammar({
             optional(choice(/[Ll]/, /[jJ]/))
           ))
         },
-
-      // Python
-      escape_sequence: $ => token(prec(PREC.ESCAPE, seq(
-          '\\',
-          choice(
-            /u[a-fA-F\d]{4}/,
-            /U[a-fA-F\d]{8}/,
-            /x[a-fA-F\d]{2}/,
-            /\d{3}/,
-            /\r?\n/,
-            /['"abfrntv\\]/,
-          )))),
 
       additive_operator: $ => token(choice(
           "+",
