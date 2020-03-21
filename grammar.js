@@ -230,13 +230,13 @@ module.exports = grammar({
       // Tokens
       //-------
 
-      camel_identifier: $ => /[a-z_][a-zA-Z0-9_]*/,
+      camel_identifier: $ => token(/[a-z_][a-zA-Z0-9_]*/),
 
-      pascal_identifier: $ => /[A-Z][a-zA-Z0-9_]*/,
+      pascal_identifier: $ => token(/[A-Z][a-zA-Z0-9_]*/),
 
-      decorator_identifier: $ => /[@][a-z_][a-zA-Z0-9_]*/,
+      decorator_identifier: $ => token(/[@][a-z_][a-zA-Z0-9_]*/),
 
-      macro_identifier: $ => /[$][a-z_][a-zA-Z0-9_]*/,
+      macro_identifier: $ => token(/[$][a-z_][a-zA-Z0-9_]*/),
 
       // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
       comment: $ => token(prec(PREC.COMMENT, choice(
@@ -297,28 +297,28 @@ module.exports = grammar({
             /['"abfrntv\\]/,
           )))),
 
-      additive_operator: $ => choice(
+      additive_operator: $ => token(choice(
           "+",
           "-",
-          "|"),
+          "|")),
 
-      disjunction_operator: $ =>
-          "||",
+      disjunction_operator: $ => token(
+          "||"),
 
-      conjuction_operator: $ =>
-          "&&",
+      conjuction_operator: $ => token(
+          "&&"),
 
-      unary_operator: $ => choice(
+      unary_operator: $ => token(choice(
           "+",
-          "-"),
+          "-")),
 
-      multiplicative_operator: $ => choice(
+      multiplicative_operator: $ => token(choice(
           "*",
           "/",
           "%",
-          "&"),
+          "&")),
 
-      relational_operator: $ => choice(
+      relational_operator: $ => token(choice(
           "==",
           "!=",
           "<",
@@ -328,7 +328,7 @@ module.exports = grammar({
           "in",
           seq("not", "in"),
           "is",
-          seq("is", "not")),
+          seq("is", "not"))),
 
     }
   }

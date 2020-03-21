@@ -23,11 +23,6 @@
     }
   },
   {
-    "type": "additive_operator",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "arithmetic_expression",
     "named": true,
     "fields": {},
@@ -518,11 +513,6 @@
     }
   },
   {
-    "type": "multiplicative_operator",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "negation_expression",
     "named": true,
     "fields": {},
@@ -649,11 +639,6 @@
     }
   },
   {
-    "type": "relational_operator",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "single_quote_string",
     "named": true,
     "fields": {},
@@ -734,11 +719,6 @@
     }
   },
   {
-    "type": "unary_operator",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "unsigned_constant",
     "named": true,
     "fields": {},
@@ -754,19 +734,7 @@
     }
   },
   {
-    "type": "!=",
-    "named": false
-  },
-  {
     "type": "\"",
-    "named": false
-  },
-  {
-    "type": "%",
-    "named": false
-  },
-  {
-    "type": "&",
     "named": false
   },
   {
@@ -782,27 +750,11 @@
     "named": false
   },
   {
-    "type": "*",
-    "named": false
-  },
-  {
-    "type": "+",
-    "named": false
-  },
-  {
     "type": ",",
     "named": false
   },
   {
-    "type": "-",
-    "named": false
-  },
-  {
     "type": ".",
-    "named": false
-  },
-  {
-    "type": "/",
     "named": false
   },
   {
@@ -814,19 +766,7 @@
     "named": false
   },
   {
-    "type": "<=",
-    "named": false
-  },
-  {
-    "type": "==",
-    "named": false
-  },
-  {
     "type": ">",
-    "named": false
-  },
-  {
-    "type": ">=",
     "named": false
   },
   {
@@ -840,6 +780,10 @@
   {
     "type": "`",
     "named": false
+  },
+  {
+    "type": "additive_operator",
+    "named": true
   },
   {
     "type": "camel_identifier",
@@ -866,16 +810,12 @@
     "named": true
   },
   {
-    "type": "in",
-    "named": false
-  },
-  {
     "type": "integer",
     "named": true
   },
   {
-    "type": "is",
-    "named": false
+    "type": "multiplicative_operator",
+    "named": true
   },
   {
     "type": "not",
@@ -886,15 +826,19 @@
     "named": true
   },
   {
+    "type": "relational_operator",
+    "named": true
+  },
+  {
     "type": "type_conversion",
     "named": true
   },
   {
-    "type": "{",
-    "named": false
+    "type": "unary_operator",
+    "named": true
   },
   {
-    "type": "|",
+    "type": "{",
     "named": false
   },
   {
