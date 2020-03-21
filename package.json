@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-haiku",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Haiku",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,6 @@
     }
   ],
   "license": "ISC",
-  "gypfile": true,
   "dependencies": {
     "nan": "^2.14.0"
   },
