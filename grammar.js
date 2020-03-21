@@ -70,7 +70,6 @@ module.exports = grammar({
         $.arithmetic_expression,
         seq("(", $.boolean_expression, ")"))),
 
-
       //------------
       // Expressions
       //------------
@@ -137,69 +136,69 @@ module.exports = grammar({
           $.unary_expression),
 
       function_call: $ => seq(
-        $.identifier,
-        "(",
-            optional($.expression_list),
-        ")"),
+          $.identifier,
+          "(",
+              optional($.expression_list),
+          ")"),
 
       unary_expression: $ => seq(
-        $.unary_operator,
-        $.factor),
+          $.unary_operator,
+          $.factor),
 
       unsigned_constant: $ =>
-        $.literal,
+          $.literal,
 
       list: $ => seq(
-        "[", $.expression_list, "]"),
+          "[", $.expression_list, "]"),
 
       expression_list: $ => seq(
-        $.expression,
-        repeat(
-          seq(",", $.expression),
-        )),
+          $.expression,
+          repeat(
+            seq(",", $.expression),
+          )),
 
       identifier: $ => seq(
-        $.identifier_name,
-        repeat(
-          seq(".", $.identifier_name),
-        )),
+          $.identifier_name,
+          repeat(
+            seq(".", $.identifier_name),
+          )),
 
       identifier_name: $ => choice(
-        $.camel_identifier,
-        $.pascal_identifier),
+          $.camel_identifier,
+          $.pascal_identifier),
 
       additive_operator: $ => choice(
-        "+",
-        "-",
-        "|"),
+          "+",
+          "-",
+          "|"),
 
       disjunction_operator: $ =>
-        "||",
+          "||",
 
       conjuction_operator: $ =>
-        "&&",
+          "&&",
 
       unary_operator: $ => choice(
-        "+",
-        "-"),
+          "+",
+          "-"),
 
       multiplicative_operator: $ => choice(
-        "*",
-        "/",
-        "%",
-        "&"),
+          "*",
+          "/",
+          "%",
+          "&"),
 
       relational_operator: $ => choice(
-        "==",
-        "!=",
-        "<",
-        ">",
-        ">=",
-        "<=",
-        "in",
-        seq("not", "in"),
-        "is",
-        seq("is", "not")),
+          "==",
+          "!=",
+          "<",
+          ">",
+          ">=",
+          "<=",
+          "in",
+          seq("not", "in"),
+          "is",
+          seq("is", "not")),
 
       //---------
       // Literals
@@ -209,13 +208,100 @@ module.exports = grammar({
           $.number,
           $.string),
 
-      number: $ =>
-        $.integer,
+      number: $ => choice(
+          $.integer,
+          $.float),
 
       string: $ => choice(
         $.double_quote_string,
         $.single_quote_string,
         $.template_string),
+
+      double_quote_string: $ => seq(
+          '"',
+          repeat(choice($.interpolation, $.escape_sequence, $._not_escape_sequence, token.immediate(prec(PREC.STRING, /[^"\\\n]+|\\\r?\n/)))),
+          '"'),
+
+      single_quote_string: $ => seq(
+          "'",
+          repeat(choice($.interpolation, $.escape_sequence, $._not_escape_sequence, token.immediate(prec(PREC.STRING, /[^'\\\n]+|\\\r?\n/)))),
+          "'"),
+
+      template_string: $ => seq(
+          "`",
+          repeat(choice($.interpolation, $.escape_sequence, $._not_escape_sequence, token.immediate(prec(PREC.STRING, /[^`\\\n]+|\\\r?\n/)))),
+          "`"),
+
+      interpolation: $ => seq(
+          '{',
+          $.expression,
+          optional($.type_conversion),
+          optional($.format_specifier),
+          '}'),
+
+      escape_sequence: $ => token(prec(1, seq(
+          '\\',
+          choice(
+            /u[a-fA-F\d]{4}/,
+            /U[a-fA-F\d]{8}/,
+            /x[a-fA-F\d]{2}/,
+            /\d{3}/,
+            /\r?\n/,
+            /['"abfrntv\\]/,
+          )))),
+
+      _not_escape_sequence: $ => '\\',
+
+      format_specifier: $ => seq(
+        ':',
+        repeat(choice(
+          /[^{}\n]+/,
+          $.format_expression
+        ))),
+
+      format_expression: $ => seq('{', $.expression, '}'),
+
+      type_conversion: $ => /![a-z]/,
+
+      integer: $ => token(choice(
+          seq(
+            choice('0x', '0X'),
+            repeat1(/_?[A-Fa-f0-9]+/),
+            optional(/[Ll]/)
+          ),
+          seq(
+            choice('0o', '0O'),
+            repeat1(/_?[0-7]+/),
+            optional(/[Ll]/)
+          ),
+          seq(
+            choice('0b', '0B'),
+            repeat1(/_?[0-1]+/),
+            optional(/[Ll]/)
+          ),
+          seq(
+            repeat1(/[0-9]+_?/),
+            choice(
+              optional(/[Ll]/), // long numbers
+              optional(/[jJ]/) // complex numbers
+            )
+          ))),
+
+      float: $ => {
+          const digits = repeat1(/[0-9]+_?/);
+          const exponent = seq(/[eE][\+-]?/, digits);
+
+          return token(seq(
+            choice(
+              seq(digits, '.', optional(digits), optional(exponent)),
+              seq(optional(digits), '.', digits, optional(exponent)),
+              seq(digits, exponent)
+            ),
+            optional(choice(/[Ll]/, /[jJ]/))
+          ))
+        },
+
+      comment: $ => token(seq('#', /.*/)),
 
       //-------
       // Tokens
@@ -226,83 +312,6 @@ module.exports = grammar({
       decorator_identifier: $ => /[@][a-z_][a-zA-Z0-9_]*/,
       macro_identifier: $ => /[$][a-z_][a-zA-Z0-9_]*/,
 
-      double_quote_string: $ => seq(
-          '"',
-          repeat(choice(
-            token.immediate(prec(PREC.STRING, /[^"\\\n]+|\\\r?\n/)),
-            $.escape_sequence
-          )),
-          '"'
-        ),
-
-      single_quote_string: $ => seq(
-          "'",
-          repeat(choice(
-            token.immediate(prec(PREC.STRING, /[^'\\\n]+|\\\r?\n/)),
-            $.escape_sequence
-          )),
-          "'"
-        ),
-
-      template_string: $ => seq(
-          "`",
-          repeat(choice(
-            token.immediate(prec(PREC.STRING, /[^'\\\n]+|\\\r?\n/)),
-            $.escape_sequence
-          )),
-          "`"
-        ),
-
-      integer: $ =>
-        /[0-9]+/,
-
-      escape_sequence: $ => token.immediate(seq(
-        '\\',
-        choice(
-          /[^xu0-7]/,
-          /[0-7]{1,3}/,
-          /x[0-9a-fA-F]{2}/,
-          /u[0-9a-fA-F]{4}/,
-          /u{[0-9a-fA-F]+}/
-        )
-      )),
-
-      any_number: $ => {
-        const hex_literal = seq(
-          choice('0x', '0X'),
-          /[\da-fA-F](_?[\da-fA-F])*/
-        );
-
-        const decimal_digits = /\d(_?\d)*/;
-        const signed_integer = seq(optional(choice('-','+')), decimal_digits);
-        const exponent_part = seq(choice('e', 'E'), signed_integer);
-
-        const binary_literal = seq(choice('0b', '0B'), /[0-1](_?[0-1])*/);
-
-        const octal_literal = seq(choice('0o', '0O'), /[0-7](_?[0-7])*/);
-
-        const bigint_literal = seq(choice(hex_literal, binary_literal, octal_literal, decimal_digits), 'n');
-
-        const decimal_integer_literal = choice(
-          '0',
-          seq(optional('0'), /[1-9]/, optional(seq(optional('_'), decimal_digits)))
-        );
-
-        const decimal_literal = choice(
-          seq(decimal_integer_literal, '.', optional(decimal_digits), optional(exponent_part)),
-          seq('.', decimal_digits, optional(exponent_part)),
-          seq(decimal_integer_literal, exponent_part),
-          seq(decimal_digits),
-        );
-
-        return token(choice(
-          hex_literal,
-          decimal_literal,
-          binary_literal,
-          octal_literal,
-          bigint_literal,
-        ))
-      },
     }
   }
 );
