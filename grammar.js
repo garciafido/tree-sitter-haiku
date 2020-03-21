@@ -200,12 +200,6 @@ module.exports = grammar({
             seq(",", $._expression),
           )),
 
-      // nested_identifier: $ => prec(PREC.MEMBER, seq(
-      //   choice($.identifier, $.nested_identifier),
-      //   '.',
-      //   $.identifier
-      // )),
-
       identifier: $ => choice(
           $.camel_identifier,
           $.pascal_identifier),
