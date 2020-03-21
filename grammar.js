@@ -2,6 +2,8 @@ const PREC = {
   COMMENT: 1, // Prefer comments over regexes
   STRING: 2,  // In a string, prefer string characters over comments
 
+  ESCAPE: 1,
+
   RELATIONAL: 1,
   FACTOR: 10,
   GENERIC_ARG: 20,
@@ -9,6 +11,11 @@ const PREC = {
 
 module.exports = grammar({
   name: 'Haiku',
+
+  extras: $ => [
+    $.comment,
+    /[\s\uFEFF\u2060\u200B\u00A0]/
+  ],
 
   rules: {
 
@@ -167,39 +174,6 @@ module.exports = grammar({
           $.camel_identifier,
           $.pascal_identifier),
 
-      additive_operator: $ => choice(
-          "+",
-          "-",
-          "|"),
-
-      disjunction_operator: $ =>
-          "||",
-
-      conjuction_operator: $ =>
-          "&&",
-
-      unary_operator: $ => choice(
-          "+",
-          "-"),
-
-      multiplicative_operator: $ => choice(
-          "*",
-          "/",
-          "%",
-          "&"),
-
-      relational_operator: $ => choice(
-          "==",
-          "!=",
-          "<",
-          ">",
-          ">=",
-          "<=",
-          "in",
-          seq("not", "in"),
-          "is",
-          seq("is", "not")),
-
       //---------
       // Literals
       //---------
@@ -239,17 +213,6 @@ module.exports = grammar({
           optional($.format_specifier),
           '}'),
 
-      escape_sequence: $ => token(prec(1, seq(
-          '\\',
-          choice(
-            /u[a-fA-F\d]{4}/,
-            /U[a-fA-F\d]{8}/,
-            /x[a-fA-F\d]{2}/,
-            /\d{3}/,
-            /\r?\n/,
-            /['"abfrntv\\]/,
-          )))),
-
       _not_escape_sequence: $ => '\\',
 
       format_specifier: $ => seq(
@@ -262,6 +225,27 @@ module.exports = grammar({
       format_expression: $ => seq('{', $.expression, '}'),
 
       type_conversion: $ => /![a-z]/,
+
+      //-------
+      // Tokens
+      //-------
+
+      camel_identifier: $ => /[a-z_][a-zA-Z0-9_]*/,
+
+      pascal_identifier: $ => /[A-Z][a-zA-Z0-9_]*/,
+
+      decorator_identifier: $ => /[@][a-z_][a-zA-Z0-9_]*/,
+
+      macro_identifier: $ => /[$][a-z_][a-zA-Z0-9_]*/,
+
+      // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
+      comment: $ => token(prec(PREC.COMMENT, choice(
+          seq('//', /.*/),
+          seq(
+            '/*',
+            /[^*]*\*+([^/*][^*]*\*+)*/,
+            '/'
+          )))),
 
       integer: $ => token(choice(
           seq(
@@ -301,25 +285,51 @@ module.exports = grammar({
           ))
         },
 
-      comment: $ => token(seq('#', /.*/)),
+      // Python
+      escape_sequence: $ => token(prec(PREC.ESCAPE, seq(
+          '\\',
+          choice(
+            /u[a-fA-F\d]{4}/,
+            /U[a-fA-F\d]{8}/,
+            /x[a-fA-F\d]{2}/,
+            /\d{3}/,
+            /\r?\n/,
+            /['"abfrntv\\]/,
+          )))),
 
-      //-------
-      // Tokens
-      //-------
+      additive_operator: $ => choice(
+          "+",
+          "-",
+          "|"),
 
-      camel_identifier: $ => /[a-z_][a-zA-Z0-9_]*/,
-      pascal_identifier: $ => /[A-Z][a-zA-Z0-9_]*/,
-      decorator_identifier: $ => /[@][a-z_][a-zA-Z0-9_]*/,
-      macro_identifier: $ => /[$][a-z_][a-zA-Z0-9_]*/,
+      disjunction_operator: $ =>
+          "||",
+
+      conjuction_operator: $ =>
+          "&&",
+
+      unary_operator: $ => choice(
+          "+",
+          "-"),
+
+      multiplicative_operator: $ => choice(
+          "*",
+          "/",
+          "%",
+          "&"),
+
+      relational_operator: $ => choice(
+          "==",
+          "!=",
+          "<",
+          ">",
+          ">=",
+          "<=",
+          "in",
+          seq("not", "in"),
+          "is",
+          seq("is", "not")),
 
     }
   }
 );
-
-function commaSep1 (rule) {
-  return sep1(rule, ',')
-}
-
-function sep1 (rule, separator) {
-  return seq(rule, repeat(seq(separator, rule)))
-}
