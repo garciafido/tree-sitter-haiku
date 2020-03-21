@@ -1,13 +1,21 @@
 {
   "name": "tree-sitter-haiku",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Haiku",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "node-gyp rebuild"
+    "build": "tree-sitter generate && node-gyp build",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Fido García",
+  "tree-sitter": [
+    {
+      "scope": "source.haiku",
+      "file-types": [
+        "haiku"
+      ]
+    }
+  ],
   "license": "ISC",
   "gypfile": true,
   "dependencies": {
