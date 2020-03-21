@@ -8,10 +8,10 @@
 #define LANGUAGE_VERSION 11
 #define STATE_COUNT 180
 #define LARGE_STATE_COUNT 2
-#define SYMBOL_COUNT 72
+#define SYMBOL_COUNT 73
 #define ALIAS_COUNT 0
-#define TOKEN_COUNT 34
-#define EXTERNAL_TOKEN_COUNT 1
+#define TOKEN_COUNT 35
+#define EXTERNAL_TOKEN_COUNT 2
 #define FIELD_COUNT 0
 #define MAX_ALIAS_SEQUENCE_LENGTH 6
 
@@ -48,45 +48,46 @@ enum {
   sym_unary_operator = 30,
   sym_multiplicative_operator = 31,
   sym_relational_operator = 32,
-  sym__template_chars = 33,
-  sym_program = 34,
-  sym_block = 35,
-  sym_body = 36,
-  sym__body_element = 37,
-  sym_property = 38,
-  sym__property_type = 39,
-  sym_decorator = 40,
-  sym_extends = 41,
-  sym_generic = 42,
-  sym__expression = 43,
-  sym__boolean_expression = 44,
-  sym_disjunction_expression = 45,
-  sym_conjuction_expression = 46,
-  sym_negation_expression = 47,
-  sym_relational_expression = 48,
-  sym__arithmetic_expression = 49,
-  sym_additive_expression = 50,
-  sym_multiplicative_expression = 51,
-  sym_function_call = 52,
-  sym_unary_expression = 53,
-  sym__unsigned_constant = 54,
-  sym_list = 55,
-  sym_identifier = 56,
-  sym__literal = 57,
-  sym__number = 58,
-  sym__string = 59,
-  sym_simple_string = 60,
-  sym_template_string = 61,
-  sym_template_substitution = 62,
-  aux_sym_program_repeat1 = 63,
-  aux_sym_block_repeat1 = 64,
-  aux_sym_body_repeat1 = 65,
-  aux_sym_generic_args_repeat1 = 66,
-  aux_sym_expression_list_repeat1 = 67,
-  aux_sym_identifier_repeat1 = 68,
-  aux_sym_simple_string_repeat1 = 69,
-  aux_sym_simple_string_repeat2 = 70,
-  aux_sym_template_string_repeat1 = 71,
+  sym__automatic_semicolon = 33,
+  sym__template_chars = 34,
+  sym_program = 35,
+  sym_block = 36,
+  sym_body = 37,
+  sym__body_element = 38,
+  sym_property = 39,
+  sym__property_type = 40,
+  sym_decorator = 41,
+  sym_extends = 42,
+  sym_generic = 43,
+  sym__expression = 44,
+  sym__boolean_expression = 45,
+  sym_disjunction_expression = 46,
+  sym_conjuction_expression = 47,
+  sym_negation_expression = 48,
+  sym_relational_expression = 49,
+  sym__arithmetic_expression = 50,
+  sym_additive_expression = 51,
+  sym_multiplicative_expression = 52,
+  sym_function_call = 53,
+  sym_unary_expression = 54,
+  sym__unsigned_constant = 55,
+  sym_list = 56,
+  sym_identifier = 57,
+  sym__literal = 58,
+  sym__number = 59,
+  sym__string = 60,
+  sym_simple_string = 61,
+  sym_template_string = 62,
+  sym_template_substitution = 63,
+  aux_sym_program_repeat1 = 64,
+  aux_sym_block_repeat1 = 65,
+  aux_sym_body_repeat1 = 66,
+  aux_sym_generic_args_repeat1 = 67,
+  aux_sym_expression_list_repeat1 = 68,
+  aux_sym_identifier_repeat1 = 69,
+  aux_sym_simple_string_repeat1 = 70,
+  aux_sym_simple_string_repeat2 = 71,
+  aux_sym_template_string_repeat1 = 72,
 };
 
 static const char *ts_symbol_names[] = {
@@ -123,6 +124,7 @@ static const char *ts_symbol_names[] = {
   [sym_unary_operator] = "unary_operator",
   [sym_multiplicative_operator] = "multiplicative_operator",
   [sym_relational_operator] = "relational_operator",
+  [sym__automatic_semicolon] = "_automatic_semicolon",
   [sym__template_chars] = "_template_chars",
   [sym_program] = "program",
   [sym_block] = "block",
@@ -198,6 +200,7 @@ static TSSymbol ts_symbol_map[] = {
   [sym_unary_operator] = sym_unary_operator,
   [sym_multiplicative_operator] = sym_multiplicative_operator,
   [sym_relational_operator] = sym_relational_operator,
+  [sym__automatic_semicolon] = sym__automatic_semicolon,
   [sym__template_chars] = sym__template_chars,
   [sym_program] = sym_program,
   [sym_block] = sym_block,
@@ -370,6 +373,10 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
   },
   [sym_relational_operator] = {
     .visible = true,
+    .named = true,
+  },
+  [sym__automatic_semicolon] = {
+    .visible = false,
     .named = true,
   },
   [sym__template_chars] = {
@@ -1365,17 +1372,17 @@ static TSLexMode ts_lex_modes[STATE_COUNT] = {
   [65] = {.lex_state = 29},
   [66] = {.lex_state = 40},
   [67] = {.lex_state = 29},
-  [68] = {.lex_state = 0, .external_lex_state = 1},
-  [69] = {.lex_state = 0, .external_lex_state = 1},
+  [68] = {.lex_state = 0, .external_lex_state = 2},
+  [69] = {.lex_state = 0, .external_lex_state = 2},
   [70] = {.lex_state = 0},
   [71] = {.lex_state = 0},
-  [72] = {.lex_state = 0, .external_lex_state = 1},
+  [72] = {.lex_state = 0, .external_lex_state = 2},
   [73] = {.lex_state = 0},
   [74] = {.lex_state = 0},
   [75] = {.lex_state = 0},
-  [76] = {.lex_state = 0, .external_lex_state = 1},
+  [76] = {.lex_state = 0, .external_lex_state = 2},
   [77] = {.lex_state = 0},
-  [78] = {.lex_state = 0, .external_lex_state = 1},
+  [78] = {.lex_state = 0, .external_lex_state = 2},
   [79] = {.lex_state = 0},
   [80] = {.lex_state = 40},
   [81] = {.lex_state = 0},
@@ -1412,7 +1419,7 @@ static TSLexMode ts_lex_modes[STATE_COUNT] = {
   [112] = {.lex_state = 29},
   [113] = {.lex_state = 3},
   [114] = {.lex_state = 1},
-  [115] = {.lex_state = 0, .external_lex_state = 1},
+  [115] = {.lex_state = 0, .external_lex_state = 2},
   [116] = {.lex_state = 3},
   [117] = {.lex_state = 1},
   [118] = {.lex_state = 29},
@@ -1480,15 +1487,21 @@ static TSLexMode ts_lex_modes[STATE_COUNT] = {
 };
 
 enum {
-  ts_external_token__template_chars = 0,
+  ts_external_token__automatic_semicolon = 0,
+  ts_external_token__template_chars = 1,
 };
 
 static TSSymbol ts_external_scanner_symbol_map[EXTERNAL_TOKEN_COUNT] = {
+  [ts_external_token__automatic_semicolon] = sym__automatic_semicolon,
   [ts_external_token__template_chars] = sym__template_chars,
 };
 
-static bool ts_external_scanner_states[2][EXTERNAL_TOKEN_COUNT] = {
+static bool ts_external_scanner_states[3][EXTERNAL_TOKEN_COUNT] = {
   [1] = {
+    [ts_external_token__automatic_semicolon] = true,
+    [ts_external_token__template_chars] = true,
+  },
+  [2] = {
     [ts_external_token__template_chars] = true,
   },
 };
@@ -1525,6 +1538,7 @@ static uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_conjuction_operator] = ACTIONS(1),
     [sym_unary_operator] = ACTIONS(1),
     [sym_multiplicative_operator] = ACTIONS(1),
+    [sym__automatic_semicolon] = ACTIONS(1),
     [sym__template_chars] = ACTIONS(1),
   },
   [1] = {

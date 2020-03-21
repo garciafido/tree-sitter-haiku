@@ -14,6 +14,7 @@ module.exports = grammar({
 
 
   externals: $ => [
+    $._automatic_semicolon,
     $._template_chars
   ],
 
