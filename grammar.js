@@ -17,6 +17,18 @@ module.exports = grammar({
     /[\s\uFEFF\u2060\u200B\u00A0]/
   ],
 
+  supertypes: $ => [
+    $._arithmetic_expression,
+    $._boolean_expression,
+    $._expression,
+    $._property_type,
+    $._body_element,
+    $._unsigned_constant,
+    $._literal,
+    $._number,
+    $._string,
+  ],
+
   rules: {
 
       //--------------
@@ -35,22 +47,22 @@ module.exports = grammar({
       ),
 
       body: $ => seq(
-        '{', repeat($.body_element), '}'),
+        '{', repeat($._body_element), '}'),
 
-      body_element: $ => choice(
-        $.block, 
+      _body_element: $ => choice(
+        $.block,
         $.property),
 
       property: $ => seq(
         repeat($.decorator),
         $.camel_identifier, ':',
-        $.property_type,
+        $._property_type,
         optional($.generic),
         optional($.body),
       ),
 
-      property_type: $ => choice(
-        $.camel_identifier, 
+      _property_type: $ => choice(
+        $.camel_identifier,
         $.pascal_identifier),
 
       decorator: $ => seq(
@@ -74,17 +86,17 @@ module.exports = grammar({
         )),
 
       generic_arg: $ =>  prec.left(PREC.GENERIC_ARG, choice(
-        $.arithmetic_expression,
-        seq("(", $.boolean_expression, ")"))),
+        $._arithmetic_expression,
+        seq("(", $._boolean_expression, ")"))),
 
       //------------
       // Expressions
       //------------
-    
-      expression: $ =>
-        $.boolean_expression,
 
-      boolean_expression: $ =>
+      _expression: $ =>
+        $._boolean_expression,
+
+      _boolean_expression: $ =>
         $.disjunction_expression,
 
       disjunction_expression: $ => choice(
@@ -111,11 +123,11 @@ module.exports = grammar({
           seq(
             $.relational_expression,
             $.relational_operator,
-            $.arithmetic_expression
+            $._arithmetic_expression
           ),
-          $.arithmetic_expression)),
+          $._arithmetic_expression)),
 
-      arithmetic_expression: $ =>
+      _arithmetic_expression: $ =>
         $.additive_expression,
 
       additive_expression: $ => choice(
@@ -136,10 +148,10 @@ module.exports = grammar({
 
       factor: $ => choice(
           $.identifier,
-          seq("(", $.expression, ")"),
+          seq("(", $._expression, ")"),
           $.function_call,
           $.list,
-          $.unsigned_constant,
+          $._unsigned_constant,
           $.unary_expression),
 
       function_call: $ => seq(
@@ -152,16 +164,16 @@ module.exports = grammar({
           $.unary_operator,
           $.factor),
 
-      unsigned_constant: $ =>
-          $.literal,
+      _unsigned_constant: $ =>
+          $._literal,
 
       list: $ => seq(
           "[", $.expression_list, "]"),
 
       expression_list: $ => seq(
-          $.expression,
+          $._expression,
           repeat(
-            seq(",", $.expression),
+            seq(",", $._expression),
           )),
 
       identifier: $ => seq(
@@ -178,15 +190,15 @@ module.exports = grammar({
       // Literals
       //---------
 
-      literal: $ => choice(
-          $.number,
-          $.string),
+      _literal: $ => choice(
+          $._number,
+          $._string),
 
-      number: $ => choice(
+      _number: $ => choice(
           $.integer,
           $.float),
 
-      string: $ => choice(
+      _string: $ => choice(
         $.double_quote_string,
         $.single_quote_string,
         $.template_string),
@@ -208,7 +220,7 @@ module.exports = grammar({
 
       interpolation: $ => seq(
           '{',
-          $.expression,
+          $._expression,
           optional($.type_conversion),
           optional($.format_specifier),
           '}'),
@@ -222,7 +234,7 @@ module.exports = grammar({
           $.format_expression
         ))),
 
-      format_expression: $ => seq('{', $.expression, '}'),
+      format_expression: $ => seq('{', $._expression, '}'),
 
       type_conversion: $ => /![a-z]/,
 

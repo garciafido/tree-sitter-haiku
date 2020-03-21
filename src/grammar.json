@@ -67,7 +67,7 @@
           "type": "REPEAT",
           "content": {
             "type": "SYMBOL",
-            "name": "body_element"
+            "name": "_body_element"
           }
         },
         {
@@ -76,7 +76,7 @@
         }
       ]
     },
-    "body_element": {
+    "_body_element": {
       "type": "CHOICE",
       "members": [
         {
@@ -109,7 +109,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "property_type"
+          "name": "_property_type"
         },
         {
           "type": "CHOICE",
@@ -137,7 +137,7 @@
         }
       ]
     },
-    "property_type": {
+    "_property_type": {
       "type": "CHOICE",
       "members": [
         {
@@ -263,7 +263,7 @@
         "members": [
           {
             "type": "SYMBOL",
-            "name": "arithmetic_expression"
+            "name": "_arithmetic_expression"
           },
           {
             "type": "SEQ",
@@ -274,7 +274,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "boolean_expression"
+                "name": "_boolean_expression"
               },
               {
                 "type": "STRING",
@@ -285,11 +285,11 @@
         ]
       }
     },
-    "expression": {
+    "_expression": {
       "type": "SYMBOL",
-      "name": "boolean_expression"
+      "name": "_boolean_expression"
     },
-    "boolean_expression": {
+    "_boolean_expression": {
       "type": "SYMBOL",
       "name": "disjunction_expression"
     },
@@ -390,18 +390,18 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "arithmetic_expression"
+                "name": "_arithmetic_expression"
               }
             ]
           },
           {
             "type": "SYMBOL",
-            "name": "arithmetic_expression"
+            "name": "_arithmetic_expression"
           }
         ]
       }
     },
-    "arithmetic_expression": {
+    "_arithmetic_expression": {
       "type": "SYMBOL",
       "name": "additive_expression"
     },
@@ -473,7 +473,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "expression"
+              "name": "_expression"
             },
             {
               "type": "STRING",
@@ -491,7 +491,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "unsigned_constant"
+          "name": "_unsigned_constant"
         },
         {
           "type": "SYMBOL",
@@ -541,9 +541,9 @@
         }
       ]
     },
-    "unsigned_constant": {
+    "_unsigned_constant": {
       "type": "SYMBOL",
-      "name": "literal"
+      "name": "_literal"
     },
     "list": {
       "type": "SEQ",
@@ -567,7 +567,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "expression"
+          "name": "_expression"
         },
         {
           "type": "REPEAT",
@@ -580,7 +580,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "expression"
+                "name": "_expression"
               }
             ]
           }
@@ -625,20 +625,20 @@
         }
       ]
     },
-    "literal": {
+    "_literal": {
       "type": "CHOICE",
       "members": [
         {
           "type": "SYMBOL",
-          "name": "number"
+          "name": "_number"
         },
         {
           "type": "SYMBOL",
-          "name": "string"
+          "name": "_string"
         }
       ]
     },
-    "number": {
+    "_number": {
       "type": "CHOICE",
       "members": [
         {
@@ -651,7 +651,7 @@
         }
       ]
     },
-    "string": {
+    "_string": {
       "type": "CHOICE",
       "members": [
         {
@@ -809,7 +809,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "expression"
+          "name": "_expression"
         },
         {
           "type": "CHOICE",
@@ -879,7 +879,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "expression"
+          "name": "_expression"
         },
         {
           "type": "STRING",
@@ -1492,6 +1492,16 @@
   "conflicts": [],
   "externals": [],
   "inline": [],
-  "supertypes": []
+  "supertypes": [
+    "_arithmetic_expression",
+    "_boolean_expression",
+    "_expression",
+    "_property_type",
+    "_body_element",
+    "_unsigned_constant",
+    "_literal",
+    "_number",
+    "_string"
+  ]
 }
 
