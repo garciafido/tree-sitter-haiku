@@ -38,11 +38,13 @@ module.exports = grammar({
   inline: $ => [
     $.generic_arg,
     $.factor,
-    $.identifier_name,
+    $.identifier,
     $.generic_args,
     $.decorator_args,
     $.expression_list,
   ],
+
+  word: $ => $.camel_identifier,
 
   rules: {
 
@@ -162,18 +164,25 @@ module.exports = grammar({
           $.factor),
 
       factor: $ => choice(
-          $.identifier,
+          $.nested_identifier,
           seq("(", $._expression, ")"),
           $.function_call,
+          $.array,
           $.list,
           $._unsigned_constant,
           $.unary_expression),
 
       function_call: $ => seq(
-          $.identifier,
+          $.nested_identifier,
           "(",
               optional($.expression_list),
           ")"),
+
+      array: $ => seq(
+          $.nested_identifier,
+          "[",
+              optional($.expression_list),
+          "]"),
 
       unary_expression: $ => seq(
           $.unary_operator,
@@ -191,15 +200,21 @@ module.exports = grammar({
             seq(",", $._expression),
           )),
 
-      identifier: $ => seq(
-          $.identifier_name,
-          repeat(
-            seq(".", $.identifier_name),
-          )),
+      // nested_identifier: $ => prec(PREC.MEMBER, seq(
+      //   choice($.identifier, $.nested_identifier),
+      //   '.',
+      //   $.identifier
+      // )),
 
-      identifier_name: $ => choice(
+      identifier: $ => choice(
           $.camel_identifier,
           $.pascal_identifier),
+
+      nested_identifier: $ => seq(
+          $.identifier,
+          repeat(
+            seq(".", $.identifier),
+          )),
 
       //---------
       // Literals

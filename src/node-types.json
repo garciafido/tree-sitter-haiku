@@ -133,6 +133,25 @@
     }
   },
   {
+    "type": "array",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "_expression",
+          "named": true
+        },
+        {
+          "type": "nested_identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "block",
     "named": true,
     "fields": {},
@@ -275,7 +294,7 @@
           "named": true
         },
         {
-          "type": "identifier",
+          "type": "nested_identifier",
           "named": true
         }
       ]
@@ -295,25 +314,6 @@
         },
         {
           "type": "_boolean_expression",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "identifier",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "camel_identifier",
-          "named": true
-        },
-        {
-          "type": "pascal_identifier",
           "named": true
         }
       ]
@@ -351,11 +351,11 @@
           "named": true
         },
         {
-          "type": "function_call",
+          "type": "array",
           "named": true
         },
         {
-          "type": "identifier",
+          "type": "function_call",
           "named": true
         },
         {
@@ -368,6 +368,10 @@
         },
         {
           "type": "multiplicative_operator",
+          "named": true
+        },
+        {
+          "type": "nested_identifier",
           "named": true
         },
         {
@@ -391,6 +395,25 @@
         },
         {
           "type": "relational_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "nested_identifier",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "camel_identifier",
+          "named": true
+        },
+        {
+          "type": "pascal_identifier",
           "named": true
         }
       ]
@@ -527,15 +550,19 @@
           "named": true
         },
         {
+          "type": "array",
+          "named": true
+        },
+        {
           "type": "function_call",
           "named": true
         },
         {
-          "type": "identifier",
+          "type": "list",
           "named": true
         },
         {
-          "type": "list",
+          "type": "nested_identifier",
           "named": true
         },
         {

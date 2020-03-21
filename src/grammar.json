@@ -1,5 +1,6 @@
 {
   "name": "haiku",
+  "word": "camel_identifier",
   "rules": {
     "program": {
       "type": "REPEAT",
@@ -462,7 +463,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "identifier"
+          "name": "nested_identifier"
         },
         {
           "type": "SEQ",
@@ -487,6 +488,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "array"
+        },
+        {
+          "type": "SYMBOL",
           "name": "list"
         },
         {
@@ -504,7 +509,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "identifier"
+          "name": "nested_identifier"
         },
         {
           "type": "STRING",
@@ -525,6 +530,35 @@
         {
           "type": "STRING",
           "value": ")"
+        }
+      ]
+    },
+    "array": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "nested_identifier"
+        },
+        {
+          "type": "STRING",
+          "value": "["
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "expression_list"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "]"
         }
       ]
     },
@@ -588,11 +622,24 @@
       ]
     },
     "identifier": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "camel_identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "pascal_identifier"
+        }
+      ]
+    },
+    "nested_identifier": {
       "type": "SEQ",
       "members": [
         {
           "type": "SYMBOL",
-          "name": "identifier_name"
+          "name": "identifier"
         },
         {
           "type": "REPEAT",
@@ -605,23 +652,10 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "identifier_name"
+                "name": "identifier"
               }
             ]
           }
-        }
-      ]
-    },
-    "identifier_name": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "camel_identifier"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "pascal_identifier"
         }
       ]
     },
@@ -1395,7 +1429,7 @@
   "inline": [
     "generic_arg",
     "factor",
-    "identifier_name",
+    "identifier",
     "generic_args",
     "decorator_args",
     "expression_list"
