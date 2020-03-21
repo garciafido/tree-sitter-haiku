@@ -4,6 +4,7 @@ const PREC = {
 
   RELATIONAL: 1,
   FACTOR: 10,
+  GENERIC_ARG: 20,
 };
 
 module.exports = grammar({
@@ -21,8 +22,8 @@ module.exports = grammar({
         repeat($.decorator),
         $.camel_identifier,
         $.pascal_identifier,
-        optional($.generic_args),
-        optional($.extends_args),
+        optional($.generic),
+        optional($.extends),
         $.body,
       ),
 
@@ -37,7 +38,7 @@ module.exports = grammar({
         repeat($.decorator),
         $.camel_identifier, ':',
         $.property_type,
-        optional($.generic_args),
+        optional($.generic),
         optional($.body),
       ),
 
@@ -51,16 +52,25 @@ module.exports = grammar({
       ),
 
       decorator_args: $ => seq(
-        "(",
-            optional($.expression_list), 
-        ")"),
+        "(", optional($.expression_list), ")"),
+
+      extends: $ => seq(
+        "(", $.expression_list, ")"),
+
+      generic: $ => seq(
+        "<", $.generic_args, ">"),
 
       generic_args: $ => seq(
-        "<", $.expression_list, ">"),
+        $.generic_arg,
+        repeat(
+          seq(",", $.generic_arg),
+        )),
 
-      extends_args: $ => seq(
-        "(", $.expression_list, ")"),
-    
+      generic_arg: $ =>  prec.left(PREC.GENERIC_ARG, choice(
+        $.arithmetic_expression,
+        seq("(", $.boolean_expression, ")"))),
+
+
       //------------
       // Expressions
       //------------

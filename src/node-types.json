@@ -63,11 +63,11 @@
           "named": true
         },
         {
-          "type": "extends_args",
+          "type": "extends",
           "named": true
         },
         {
-          "type": "generic_args",
+          "type": "generic",
           "named": true
         },
         {
@@ -252,7 +252,7 @@
     }
   },
   {
-    "type": "extends_args",
+    "type": "extends",
     "named": true,
     "fields": {},
     "children": {
@@ -321,7 +321,7 @@
     }
   },
   {
-    "type": "generic_args",
+    "type": "generic",
     "named": true,
     "fields": {},
     "children": {
@@ -329,7 +329,41 @@
       "required": true,
       "types": [
         {
-          "type": "expression_list",
+          "type": "generic_args",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "generic_arg",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "arithmetic_expression",
+          "named": true
+        },
+        {
+          "type": "boolean_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "generic_args",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "generic_arg",
           "named": true
         }
       ]
@@ -501,7 +535,7 @@
           "named": true
         },
         {
-          "type": "generic_args",
+          "type": "generic",
           "named": true
         },
         {

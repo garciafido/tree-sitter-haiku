@@ -31,7 +31,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "generic_args"
+              "name": "generic"
             },
             {
               "type": "BLANK"
@@ -43,7 +43,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "extends_args"
+              "name": "extends"
             },
             {
               "type": "BLANK"
@@ -116,7 +116,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "generic_args"
+              "name": "generic"
             },
             {
               "type": "BLANK"
@@ -196,24 +196,7 @@
         }
       ]
     },
-    "generic_args": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "<"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "expression_list"
-        },
-        {
-          "type": "STRING",
-          "value": ">"
-        }
-      ]
-    },
-    "extends_args": {
+    "extends": {
       "type": "SEQ",
       "members": [
         {
@@ -229,6 +212,78 @@
           "value": ")"
         }
       ]
+    },
+    "generic": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "<"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "generic_args"
+        },
+        {
+          "type": "STRING",
+          "value": ">"
+        }
+      ]
+    },
+    "generic_args": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "generic_arg"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "generic_arg"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "generic_arg": {
+      "type": "PREC_LEFT",
+      "value": 20,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "arithmetic_expression"
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "("
+              },
+              {
+                "type": "SYMBOL",
+                "name": "boolean_expression"
+              },
+              {
+                "type": "STRING",
+                "value": ")"
+              }
+            ]
+          }
+        ]
+      }
     },
     "expression": {
       "type": "SYMBOL",
