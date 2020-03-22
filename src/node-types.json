@@ -10,20 +10,6 @@
     ]
   },
   {
-    "type": "_body_element",
-    "named": true,
-    "subtypes": [
-      {
-        "type": "block",
-        "named": true
-      },
-      {
-        "type": "property",
-        "named": true
-      }
-    ]
-  },
-  {
     "type": "_boolean_expression",
     "named": true,
     "subtypes": [
@@ -67,20 +53,6 @@
       },
       {
         "type": "integer",
-        "named": true
-      }
-    ]
-  },
-  {
-    "type": "_property_type",
-    "named": true,
-    "subtypes": [
-      {
-        "type": "camel_identifier",
-        "named": true
-      },
-      {
-        "type": "pascal_identifier",
         "named": true
       }
     ]
@@ -195,7 +167,7 @@
       "required": false,
       "types": [
         {
-          "type": "_body_element",
+          "type": "block",
           "named": true
         }
       ]
@@ -435,33 +407,6 @@
     }
   },
   {
-    "type": "property",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "_property_type",
-          "named": true
-        },
-        {
-          "type": "body",
-          "named": true
-        },
-        {
-          "type": "decorator",
-          "named": true
-        },
-        {
-          "type": "generic",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "relational_expression",
     "named": true,
     "fields": {},
@@ -602,10 +547,6 @@
   },
   {
     "type": ".",
-    "named": false
-  },
-  {
-    "type": ":",
     "named": false
   },
   {

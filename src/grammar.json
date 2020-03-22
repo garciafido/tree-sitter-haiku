@@ -24,8 +24,17 @@
           "name": "camel_identifier"
         },
         {
-          "type": "SYMBOL",
-          "name": "pascal_identifier"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "pascal_identifier"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "camel_identifier"
+            }
+          ]
         },
         {
           "type": "CHOICE",
@@ -52,8 +61,16 @@
           ]
         },
         {
-          "type": "SYMBOL",
-          "name": "body"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "body"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -68,86 +85,12 @@
           "type": "REPEAT",
           "content": {
             "type": "SYMBOL",
-            "name": "_body_element"
+            "name": "block"
           }
         },
         {
           "type": "STRING",
           "value": "}"
-        }
-      ]
-    },
-    "_body_element": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "block"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "property"
-        }
-      ]
-    },
-    "property": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SYMBOL",
-            "name": "decorator"
-          }
-        },
-        {
-          "type": "SYMBOL",
-          "name": "camel_identifier"
-        },
-        {
-          "type": "STRING",
-          "value": ":"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_property_type"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "generic"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "body"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        }
-      ]
-    },
-    "_property_type": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "camel_identifier"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "pascal_identifier"
         }
       ]
     },
@@ -1438,8 +1381,6 @@
     "_arithmetic_expression",
     "_boolean_expression",
     "_expression",
-    "_property_type",
-    "_body_element",
     "_unsigned_constant",
     "_literal",
     "_number",

@@ -27,8 +27,6 @@ module.exports = grammar({
     $._arithmetic_expression,
     $._boolean_expression,
     $._expression,
-    $._property_type,
-    $._body_element,
     $._unsigned_constant,
     $._literal,
     $._number,
@@ -57,30 +55,14 @@ module.exports = grammar({
       block: $ => seq(
         repeat($.decorator),
         $.camel_identifier,
-        $.pascal_identifier,
+        choice($.pascal_identifier, $.camel_identifier),
         optional($.generic),
         optional($.extends),
-        $.body,
-      ),
-
-      body: $ => seq(
-        '{', repeat($._body_element), '}'),
-
-      _body_element: $ => choice(
-        $.block,
-        $.property),
-
-      property: $ => seq(
-        repeat($.decorator),
-        $.camel_identifier, ':',
-        $._property_type,
-        optional($.generic),
         optional($.body),
       ),
 
-      _property_type: $ => choice(
-        $.camel_identifier,
-        $.pascal_identifier),
+      body: $ => seq(
+        '{', repeat($.block), '}'),
 
       decorator: $ => seq(
         $.decorator_identifier,
