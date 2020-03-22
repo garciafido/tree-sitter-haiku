@@ -72,6 +72,20 @@
     "want_separate_host_toolset": 0,
     "xcode_version": "8.0",
     "nodedir": "/Users/fido/Library/Caches/node-gyp/12.16.0",
-    "standalone_static_library": 1
+    "standalone_static_library": 1,
+    "version_git_tag": "true",
+    "init_license": "MIT",
+    "registry": "https://registry.yarnpkg.com",
+    "version_commit_hooks": "true",
+    "bin_links": "true",
+    "strict_ssl": "true",
+    "save_prefix": "^",
+    "version_git_message": "v%s",
+    "user_agent": "yarn/1.22.0 npm/? node/v12.16.0 darwin x64",
+    "ignore_scripts": "",
+    "version_git_sign": "",
+    "ignore_optional": "",
+    "init_version": "1.0.0",
+    "version_tag_prefix": "v"
   }
 }
