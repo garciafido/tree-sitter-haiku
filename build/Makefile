@@ -321,13 +321,13 @@ $(obj).$(TOOLSET)/%.o: $(obj)/%.S FORCE_DO_CMD
 
 ifeq ($(strip $(foreach prefix,$(NO_LOAD),\
     $(findstring $(join ^,$(prefix)),\
-                 $(join ^,tree_sitter_Haiku_binding.target.mk)))),)
-  include tree_sitter_Haiku_binding.target.mk
+                 $(join ^,tree_sitter_haiku_binding.target.mk)))),)
+  include tree_sitter_haiku_binding.target.mk
 endif
 
 quiet_cmd_regen_makefile = ACTION Regenerating $@
 cmd_regen_makefile = cd $(srcdir); /usr/local/lib/node_modules/node-gyp/gyp/gyp_main.py -fmake --ignore-environment "-Dlibrary=shared_library" "-Dvisibility=default" "-Dnode_root_dir=/Users/fido/Library/Caches/node-gyp/12.16.0" "-Dnode_gyp_dir=/usr/local/lib/node_modules/node-gyp" "-Dnode_lib_file=/Users/fido/Library/Caches/node-gyp/12.16.0/<(target_arch)/node.lib" "-Dmodule_root_dir=/Users/fido/projects/Haiku/tree-sitter-haiku" "-Dnode_engine=v8" "--depth=." "-Goutput_dir=." "--generator-output=build" -I/Users/fido/projects/Haiku/tree-sitter-haiku/build/config.gypi -I/usr/local/lib/node_modules/node-gyp/addon.gypi -I/Users/fido/Library/Caches/node-gyp/12.16.0/include/node/common.gypi "--toplevel-dir=." binding.gyp
-Makefile: $(srcdir)/binding.gyp $(srcdir)/../../../Library/Caches/node-gyp/12.16.0/include/node/common.gypi $(srcdir)/build/config.gypi $(srcdir)/../../../../../usr/local/lib/node_modules/node-gyp/addon.gypi
+Makefile: $(srcdir)/binding.gyp $(srcdir)/build/config.gypi $(srcdir)/../../../../../usr/local/lib/node_modules/node-gyp/addon.gypi $(srcdir)/../../../Library/Caches/node-gyp/12.16.0/include/node/common.gypi
 	$(call do_cmd,regen_makefile)
 
 # "all" is a concatenation of the "all" targets from all the included
