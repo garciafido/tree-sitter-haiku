@@ -54,12 +54,16 @@ module.exports = grammar({
 
       block: $ => seq(
         repeat($.decorator),
-        $.camel_identifier,
-        choice($.pascal_identifier, $.camel_identifier),
+        $.block_type,
+        $.block_name,
         optional($.generic),
         optional($.extends),
         optional($.body),
       ),
+
+      block_type: $ => $.camel_identifier,
+
+      block_name: $ => choice($.pascal_identifier, $.camel_identifier),
 
       body: $ => seq(
         '{', repeat($.block), '}'),
@@ -198,7 +202,13 @@ module.exports = grammar({
 
       _literal: $ => choice(
           $._number,
+          $.false,
+          $.true,
           $._string),
+
+      false: $ => "false",
+
+      true: $ => "true",
 
       _number: $ => choice(
           $.integer,

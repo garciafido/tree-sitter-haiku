@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-haiku",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Haiku",
   "main": "index.js",
   "scripts": {
