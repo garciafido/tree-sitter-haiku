@@ -27,7 +27,6 @@ module.exports = grammar({
     $._arithmetic_expression,
     $._boolean_expression,
     $._expression,
-    $._unsigned_constant,
     $._literal,
     $._number,
     $._string,
@@ -39,7 +38,7 @@ module.exports = grammar({
     $.identifier,
     $.generic_args,
     $.decorator_args,
-    $.expression_list,
+    $.expression_args,
   ],
 
   word: $ => $.camel_identifier,
@@ -74,10 +73,13 @@ module.exports = grammar({
       ),
 
       decorator_args: $ => seq(
-        "(", optional($.expression_list), ")"),
+        "(",
+        $.expression_args,
+        ")"
+      ),
 
       extends: $ => seq(
-        "(", $.expression_list, ")"),
+        "(", $.expression_args, ")"),
 
       generic: $ => seq(
         "<", $.generic_args, ">"),
@@ -150,51 +152,52 @@ module.exports = grammar({
           $.factor),
 
       factor: $ => choice(
-          $.nested_identifier,
-          seq("(", $._expression, ")"),
+          $.non_literal_factor,
+          $._literal,
+      ),
+
+      non_literal_factor: $ => choice(
+          $.dot_accessor,
+          $.identifier,
           $.function_call,
-          $.array,
+          $.array_accessor,
+          seq("(", $.expression_args, ")"),
           $.list,
-          $._unsigned_constant,
           $.unary_expression),
 
-      function_call: $ => seq(
-          $.nested_identifier,
+      dot_accessor: $ => seq(
+        $.non_literal_factor, ".", $.identifier,
+      ),
+
+      function_call: $ => prec.left(PREC.FACTOR, seq(
+          $.non_literal_factor,
           "(",
-              optional($.expression_list),
-          ")"),
+              optional($.expression_args),
+          ")")),
 
-      array: $ => seq(
-          $.nested_identifier,
+      array_accessor: $ => prec.left(PREC.FACTOR, seq(
+          $.non_literal_factor,
           "[",
-              optional($.expression_list),
+              optional($.expression_args),
           "]"),
+      ),
 
-      unary_expression: $ => seq(
+      unary_expression: $ => prec.left(PREC.FACTOR, seq(
           $.unary_operator,
-          $.factor),
-
-      _unsigned_constant: $ =>
-          $._literal,
+          $.factor)),
 
       list: $ => seq(
-          "[", $.expression_list, "]"),
+          "[", optional($.expression_args), "]"),
 
-      expression_list: $ => seq(
-          $._expression,
-          repeat(
-            seq(",", $._expression),
-          )),
+      expression_args: $ => seq(
+        $._expression,
+        optional(seq(",", repeat($._expression))),
+        optional(",")
+      ),
 
       identifier: $ => choice(
           $.camel_identifier,
           $.pascal_identifier),
-
-      nested_identifier: $ => seq(
-          $.identifier,
-          repeat(
-            seq(".", $.identifier),
-          )),
 
       //---------
       // Literals
@@ -261,7 +264,7 @@ module.exports = grammar({
       repeat(choice(
         $._template_chars,
         $.escape_sequence,
-        $.template_substitution
+        $.template_substitution,
       )),
       '`'
     ),
@@ -276,13 +279,13 @@ module.exports = grammar({
       // Tokens
       //-------
 
-      camel_identifier: $ => token(/[a-z_][a-zA-Z0-9_]*/),
+      camel_identifier: $ => token(/[a-z][a-zA-Z0-9_]*/),
+
+      // snake_identifier: $ => token(/[a-z_][a-z0-9_]*/),
 
       pascal_identifier: $ => token(/[A-Z][a-zA-Z0-9_]*/),
 
       decorator_identifier: $ => token(/[@][a-z_][a-zA-Z0-9_]*/),
-
-      macro_identifier: $ => token(/[$][a-z_][a-zA-Z0-9_]*/),
 
       integer: $ => token(choice(
           seq(
